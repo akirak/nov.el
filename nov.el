@@ -929,15 +929,16 @@ See also `nov-bookmark-make-record'."
   (when (and (eq major-mode 'nov-mode) nov-file-name)
     (when (not (integerp nov-documents-index))
       (setq nov-documents-index 0))
-    (let ((org-store-props-function
-           (if (fboundp 'org-link-store-props)
-               'org-link-store-props
-             'org-store-link-props))
-          (link (format "nov:%s::%d:%d"
-                        nov-file-name
-                        nov-documents-index
-                        (point)))
-          (description (format "EPUB file at %s" nov-file-name)))
+    (let* ((filename (abbreviate-file-name nov-file-name))
+           (org-store-props-function
+            (if (fboundp 'org-link-store-props)
+                'org-link-store-props
+              'org-store-link-props))
+           (link (format "nov:%s::%d:%d"
+                         filename
+                         nov-documents-index
+                         (point)))
+           (description (format "EPUB file at %s" filename)))
       (funcall org-store-props-function
                :type "nov"
                :link link
